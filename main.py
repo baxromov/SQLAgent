@@ -2,32 +2,22 @@ from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain_community.utilities import SQLDatabase
 import os
 
-# Set API key for the LLM
+
 if not os.environ.get("CO_API_KEY"):
     os.environ["CO_API_KEY"] = ""
 
 from langchain.chat_models import init_chat_model
 
-# Initialize the LLM
+
 llm = init_chat_model("cohere:command-r-plus")
 
-# Connect to PostgreSQL database
 db = SQLDatabase.from_uri("postgresql://postgres:postgres@localhost:5432/supplychain-local")
-# print(f"Dialect: {db.dialect}")
-# print(f"Available tables: {db.get_usable_table_names()}")
-# print(f'Sample output: {db.run('SELECT * FROM "order" LIMIT 5;')}')
 
-# Create a toolkit for interacting with the SQL database
 toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 tools = toolkit.get_tools()
-#
-# # Print out tool descriptions
 for tool in tools:
     print(f"{tool.name}: {tool.description}\n")
-#
 from langgraph.prebuilt import create_react_agent
-#
-# # System prompt with PostgreSQL dialect
 system_prompt = """
 You are an agent designed to interact with a SQL database.
 Given an input question, create a syntactically correct {dialect} query to run,
