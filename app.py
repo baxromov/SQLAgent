@@ -96,7 +96,7 @@ if username and password and host and port and database:
                             {"messages": [{"role": "user", "content": user_question}]},
                             stream_mode="values",  # Stream response
                     ):
-                        st.write(step["messages"][-1].content)  # Display result step-by-step
+                        st.write(step["messages"][-1].pretty_print())  # Display result step-by-step
 
 
                 except Exception as e:
