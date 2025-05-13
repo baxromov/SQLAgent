@@ -94,16 +94,17 @@ if username and password and host and port and database:
                     # Stream the agent's response
                     for step in agent.stream({"messages": [{"role": "user", "content": user_question}]}):
                         # Ensure step object contains expected data
-                        if "agent" in step and "messages" in step["agent"]:
-                            messages = step["agent"]["messages"]
-                            if isinstance(messages, list) and len(messages) > 0:
-                                # Safely access the content of the last message
-                                message = messages[-1].get("content", "(No content in response)")
-                                st.write(message)
-                            else:
-                                st.error("The response messages are in an unexpected format.")
-                        else:
-                            st.error("Unexpected structure in the streamed response.")
+                        st.write(step['messages'][-1].content)
+                        # if "agent" in step and "messages" in step["agent"]:
+                        #     messages = step["agent"]["messages"]
+                        #     if isinstance(messages, list) and len(messages) > 0:
+                        #         # Safely access the content of the last message
+                        #         message = messages[-1].get("content", "(No content in response)")
+                        #         st.write(message)
+                        #     else:
+                        #         st.error("The response messages are in an unexpected format.")
+                        # else:
+                        #     st.error("Unexpected structure in the streamed response.")
 
                 except Exception as e:
                     st.error(f"An error occurred while processing your question: {e}")
