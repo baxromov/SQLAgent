@@ -94,7 +94,7 @@ if username and password and host and port and database:
                     # Stream the agent's response
                     for step in agent.stream({"messages": [{"role": "user", "content": user_question}]}):
                         # Ensure step object contains expected data
-                        st.write(step['messages'][-1].content)
+                        st.write(step['messages'][-1].pretty_print())
                         # if "agent" in step and "messages" in step["agent"]:
                         #     messages = step["agent"]["messages"]
                         #     if isinstance(messages, list) and len(messages) > 0:
