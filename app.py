@@ -38,7 +38,8 @@ if username and password and host and port and database:
         # Construct the `db_uri`
         db_uri = f"postgresql://{username}:{encoded_password}@{host}:{port}/{database}"
 
-        # Optionally display the constructed URI (omit passwords for security reasons)
+        # Display the constructed URI
+        # Note: Omitting the password display for security
         st.write(f"Constructed Database URI: `{db_uri}` (password is encoded for connection)")
 
         # Connect to the database
@@ -92,10 +93,17 @@ if username and password and host and port and database:
                 try:
                     # Stream the agent's response
                     for step in agent.stream({"messages": [{"role": "user", "content": user_question}]}):
-                        if "agent" in step:
-                            # Display agent message
-                            message = step["agent"]["messages"][-1]["content"]
-                            st.write(message)
+                        # Ensure step object contains expected data
+                        if "agent" in step and "messages" in step["agent"]:
+                            messages = step["agent"]["messages"]
+                            if isinstance(messages, list) and len(messages) > 0:
+                                # Safely access the content of the last message
+                                message = messages[-1].get("content", "(No content in response)")
+                                st.write(message)
+                            else:
+                                st.error("The response messages are in an unexpected format.")
+                        else:
+                            st.error("Unexpected structure in the streamed response.")
 
                 except Exception as e:
                     st.error(f"An error occurred while processing your question: {e}")

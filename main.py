@@ -4,7 +4,7 @@ import os
 
 # Set API key for the LLM
 if not os.environ.get("CO_API_KEY"):
-    os.environ["CO_API_KEY"] = "tfCACiGTo94egdP6vDzPH2IP4w4HR6e4H7jRVahC"
+    os.environ["CO_API_KEY"] = ""
 
 from langchain.chat_models import init_chat_model
 
